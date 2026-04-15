@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -8,7 +9,7 @@ android {
 
     defaultConfig {
         minSdk 21
-        targetSdk 36
+        targetSdk 34
     }
 
     buildFeatures {
@@ -24,5 +25,19 @@ android {
 
 dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-	implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.8.9'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.PersonalDB'
+                artifactId = 'jsonbin'
+                version = '1.0'
+            }
+        }
+    }
 }
