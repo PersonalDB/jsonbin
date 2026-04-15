@@ -13,10 +13,17 @@ apply plugin: 'maven-publish'
 
 android {
     namespace 'com.bshashi.jsonbin'
-    compileSdkVersion 34
+    compileSdk 34 // 'SdkVersion' ki jagah 'Sdk' use karein newer version mein
 
     defaultConfig {
-        minSdkVersion 21
+        minSdk 21
+    }
+
+    // Gradle 8+ ke liye ye block help karta hai compatibility mein
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
@@ -29,7 +36,9 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release
+                // components.release agar error de toh ye line sabse best hai:
+                from components.findByName('release')
+                
                 groupId = 'com.github.PersonalDB'
                 artifactId = 'jsonbin'
                 version = '1.0'
@@ -37,3 +46,4 @@ afterEvaluate {
         }
     }
 }
+
